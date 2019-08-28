@@ -1,33 +1,220 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,900|Shadows+Into+Light+Two&display=swap');
+
+:root {
+  --header-row-height: 25px;
+  --my-grey: #626262;
+  --my-white: #EDf0f3;
+  --my-dk-blue: #37495D;
+  --habit-0: #f7c4ca;
+  --striped-background-0: repeating-linear-gradient(-45deg, #f7c4ca, #f7c4ca 5px, #EDf0f3 5px, #EDf0f3 10px);
+  --habit-1: #d5a6b5;
+  --striped-background-1: repeating-linear-gradient(-45deg, #d5a6b5, #d5a6b5 5px, #EDf0f3 5px, #EDf0f3 10px);
+  --habit-2: #968da1;
+  --striped-background-2: repeating-linear-gradient(-45deg, #968da1, #968da1 5px, #EDf0f3 5px, #EDf0f3 10px);
+  --habit-3: #537289;
+  --striped-background-3: repeating-linear-gradient(-45deg, #537289, #537289 5px, #EDf0f3 5px, #EDf0f3 10px);
+}
+
+h1, span {
+  color: var(--my-grey);
+  font-family: 'Shadows Into Light Two', cursive;
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
 .App {
+  background-color: var(--my-dk-blue)
+}
+
+.grid-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 15% auto 15%;
+  grid-template-rows: 110px auto 110px;
+  background-color: var(--my-dk-blue);
+}
+
+.grid-side-left {
+  grid-column: 1;
+  grid-row: 1;
+  background-color: var(--my-white);
+}
+
+.grid-side-right {
+  grid-column: 3;
+  grid-row: 1;
+  background-color: var(--my-white);
+}
+
+.grid-container > div {
+  /*background-color: rgba(255, 255, 255, 0.7);*/
+  background-color: var(--my-white);
+}
+
+.title {
+  grid-column: 2;
+  grid-row: 1;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/*habit label container*/
+.labels {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  text-align: right;
+  /*height: 400px;*/
+  padding-right: 10px;
+}
+
+.habit-labels {
+  height: 62px;
+  line-height: 350%;
+}
+
+/* keep habit labels at the right height compared to day labels*/
+.spacer-label {
+  height: var(--header-row-height);
+}
+
+/* container for the habit summary labels that show on click of cell or label */
+.habit-summary-container {
+  grid-column: 3;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* used to be typo here, check fix later*/
+  background-color: var(--my-white);
+  padding-left: 10px;
+}
+
+.habit-summary {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  height: 62px;
+  line-height: 300%;
+}
+
+.content {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.padding-bottom {
+  padding-bottom: 8px;
+}
+
+.header-row, .habit-row, .day-summary-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-row > span {
+  width: 62px;
+  height: var(--header-row-height);
+  text-align: center;
+}
+
+/* extra layer of border around the outside of grid to make up for side-by-side borders on the inside */
+.habit-grid {
+  border: 1px solid var(--my-grey);
+}
+
+.day-summary-container > span {
+  width: 62px;
+  height: 32px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  text-align: center;
+  padding-top: 8px;
+}
+
+.complete, .incomplete, .day-off {
+  height: 60px;
+  width: 60px;
+  border: 1px solid var(--my-grey);
+  display: flex;
+  flex-direction: column-reverse;
+  transition: opacity 0.5s;
+}
+
+.complete:hover, .day-off:hover {
+  opacity: .4;
+}
+
+.partial {
+  border: none;
+  border-top: 2px solid var(--my-grey);
+  width: 100%;
+}
+
+.complete {
+  background: white;
+}
+
+.incomplete {
+  background: var(--my-white);
+}
+
+.picker-container {
+  grid-row: 3;
+  grid-column: 1 / span 3;
+  background: var(--my-white);
+  /*border-top: 1px solid var(--my-grey);*/
+  padding-top: 8px;
+  display: grid;
+  grid-template-columns: 15% auto 15%;
+  grid-template-rows: 60px auto;
+}
+
+.picker {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.picker-week {
+  display: flex;
+  flex-direction: row;
+  height: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.picker-week:hover {
+  outline: 2px solid var(--my-grey);
+  z-index: 10;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.picker-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-cell {
+  height: 13px;
+  width: 13px;
+}
+
+.picker-label-container {
+  grid-row: 2;
+  grid-column: 2;
+  /*border-top: 2px solid var(--my-grey);*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-top: 4px;
+}
+
+.picker-label {
+  /*border: 1px solid var(--habit-1);*/
+  height: var(--header-row-height);
+  width: 40px;
+  text-align: center;
+  /*margin-left: 50px*/
 }

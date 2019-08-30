@@ -3,7 +3,7 @@ import './App.css';
 import data from "./data.json";
 import HabitLabelContainer from './components/HabitLabelContainer/HabitLabelContainer.js';
 import DateHeader from './components/DateHeader/DateHeader.js';
-import HabitGrid from './components/HabitGrid/HabitGrid.js';
+import HabitRow from './components/HabitRow/HabitRow.js';
 
 // import HabitLabel from './components/HabitLabel/HabitLabel.js'
 
@@ -14,10 +14,31 @@ class App extends Component{
     dayNames: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
     dayNums: [], // for the date label, eg 12, 13, 14 
     mainGridDayNum:7,
+    habitLabels:[],
   }
 
-  getHabitWeek = (habitTitle, ) => {
+  dateInRange = (dateString, index) => {
+    // console.log("index: ", index);
+    // let queryDate = new Date(dateString);
+    let endDate = new Date();
+    let startDate = new Date(this.state.startDate);
+    
+    //temp while dateString is actually an index
+    let queryDate = new Date()
 
+    queryDate.setDate(startDate.getUTCDate() + index);
+
+    endDate.setDate(startDate.getUTCDate() + (this.state.mainGridDayNum - 1));
+    // console.log(startDate.toISOString());
+    // console.log(queryDate.toISOString());
+    // console.log(endDate.toISOString());
+    if (queryDate >= startDate && queryDate <= endDate) {
+      // console.log(true);
+      return true;
+    } else {
+      // console.log(false);
+      return false;
+    }
   }
 
   showSummaryOld = (day, habitN) => {
@@ -110,8 +131,29 @@ class App extends Component{
     // console.log("componentDidMount");
     this.doFetch();
     document.body.style.background = "#37495D";
+    
+    // set state: dates
     this.updateDateRowState('2019-08-12', 7);
+    
+    // set state: labels from data
+    if (this.state.habitLabels.length === 0) {
+      this.setState({
+        habitLabels: this.state.data.map((habit) => habit["title"])
+      });
+    }
 
+    // this.dateInRange("2020-08-19", 0);
+    // this.state.data.map((habit, index) => habit["score"].filter)
+
+    // test code for getting week data
+    // let foo = this.state.data.map((habit, index) => [habit["type"], habit["score"].filter(this.dateInRange)])
+    // let foo = this.state.data.map((e, i) => console.log(e));
+    // console.log(foo);
+  }
+
+  foobar = (type, goal, score) => {
+    console.log(type, goal, score);
+    return (score / goal) * 100;
   }
 
   render() {
@@ -130,20 +172,34 @@ class App extends Component{
           {/* row 2 */}
           <HabitLabelContainer
             // labels={this.state.abels}
-            labels={this.state.data.map((habitData) => habitData["title"])}
-            habitClick={(day, habitN) => {this.showSummary(day, habitN)}}
+            labels={this.state.habitLabels}
+            showSummary={(day, habitN) => {this.showSummary(day, habitN)}}
           />
 
           <div className="content">
             <DateHeader
               dayNames={this.state.dayNames}
               dayNums={this.state.dayNums}
-              dateClick={(day, habitN) => {this.showSummary(day, habitN)}}
+              showSummary={(day, habitN) => {this.showSummary(day, habitN)}}
             />
-            <HabitGrid/>
-            {/* <div className="habit-grid">
-              
-            </div> */}
+            <div className="habit-grid">
+              {this.state.data
+                .filter(row => this.state.habitLabels.indexOf(row["title"] >= 0 ))  // only habits where labels are showing
+                .map((row, index) => (
+                <HabitRow
+                  index={index}
+                  type={row["type"]}
+                  data={
+                    row["score"]
+                      .filter(this.dateInRange)                                           // only dates within the week range from start date
+                      .map((score) => (
+                        row["type"] !== "number" ? score : (score/row["dGoal"]) * 100     // number scores should be % of goal
+                      ))
+                  }
+                />
+                ))
+              }
+            </div>
           </div>
 
           <div className="habit-summary-container">

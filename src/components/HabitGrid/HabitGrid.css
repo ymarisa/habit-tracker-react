@@ -1,0 +1,4 @@
+/* extra layer of border around the outside of grid to make up for side-by-side borders on the inside */
+.habit-grid {
+    border: 1px solid var(--my-grey);
+  }

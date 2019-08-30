@@ -94,13 +94,6 @@ h1 {
   flex-direction: row;
 }
 
-
-
-/* extra layer of border around the outside of grid to make up for side-by-side borders on the inside */
-.habit-grid {
-  border: 1px solid var(--my-grey);
-}
-
 .day-summary-container > span {
   width: 62px;
   height: 32px;

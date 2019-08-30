@@ -3,18 +3,21 @@ import './App.css';
 import data from "./data.json";
 import HabitLabelContainer from './components/HabitLabelContainer/HabitLabelContainer.js';
 import DateHeader from './components/DateHeader/DateHeader.js';
+import HabitGrid from './components/HabitGrid/HabitGrid.js';
 
 // import HabitLabel from './components/HabitLabel/HabitLabel.js'
 
 class App extends Component{
   state = {
+    data: data,
     startDate: '2019-08-12',
-    habitLabels: data.map((habit) => (
-      habit["title"]
-    )),
     dayNames: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+    dayNums: [], // for the date label, eg 12, 13, 14 
     mainGridDayNum:7,
-    dayNums: [],
+  }
+
+  getHabitWeek = (habitTitle, ) => {
+
   }
 
   showSummaryOld = (day, habitN) => {
@@ -80,7 +83,12 @@ class App extends Component{
     console.log(day_part);
     let days = this.state.dayNums;
     for (let i = day_part; i < day_part + nDays; i++) {
-      let stringi = i.toString();
+      let stringi = '';
+      if (i < 10) {
+        stringi = '0' + i;
+      } else {
+        stringi = i.toString();
+      }
       // console.log(stringi)
       days.push(stringi);
     }
@@ -93,8 +101,8 @@ class App extends Component{
 
   doFetch = () => {
     // console.log("doFetch");
-    this.state.habitLabels.forEach( (label) => {
-      console.log(label);
+    this.state.data.forEach( (habitData) => {
+      console.log(habitData["title"]);
     })
   }
 
@@ -121,7 +129,8 @@ class App extends Component{
 
           {/* row 2 */}
           <HabitLabelContainer
-            labels={this.state.habitLabels}
+            // labels={this.state.abels}
+            labels={this.state.data.map((habitData) => habitData["title"])}
             habitClick={(day, habitN) => {this.showSummary(day, habitN)}}
           />
 
@@ -131,10 +140,10 @@ class App extends Component{
               dayNums={this.state.dayNums}
               dateClick={(day, habitN) => {this.showSummary(day, habitN)}}
             />
-
-            <div className="habit-grid">
+            <HabitGrid/>
+            {/* <div className="habit-grid">
               
-            </div>
+            </div> */}
           </div>
 
           <div className="habit-summary-container">

@@ -60,27 +60,6 @@ h1 {
   text-align: center;
 }
 
-/*habit label container*/
-.labels {
-  grid-column: 1;
-  grid-row: 2;
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-  /*height: 400px;*/
-  padding-right: 10px;
-}
-
-.habit-labels {
-  height: 62px;
-  line-height: 350%;
-}
-
-/* keep habit labels at the right height compared to day labels*/
-.spacer-label {
-  height: var(--header-row-height);
-}
-
 /* container for the habit summary labels that show on click of cell or label */
 .habit-summary-container {
   grid-column: 3;
@@ -115,11 +94,7 @@ h1 {
   flex-direction: row;
 }
 
-.header-row > span {
-  width: 62px;
-  height: var(--header-row-height);
-  text-align: center;
-}
+
 
 /* extra layer of border around the outside of grid to make up for side-by-side borders on the inside */
 .habit-grid {

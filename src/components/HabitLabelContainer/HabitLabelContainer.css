@@ -1,0 +1,20 @@
+/*habit label container*/
+.labels {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    /*height: 400px;*/
+    padding-right: 10px;
+  }
+  
+  .habit-labels {
+    height: 62px;
+    line-height: 350%;
+  }
+  
+  /* keep habit labels at the right height compared to day labels*/
+  .spacer-label {
+    height: var(--header-row-height);
+  }

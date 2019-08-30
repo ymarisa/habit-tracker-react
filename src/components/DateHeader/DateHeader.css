@@ -1,0 +1,5 @@
+.header-row > span {
+    width: 62px;
+    height: var(--header-row-height);
+    text-align: center;
+  }

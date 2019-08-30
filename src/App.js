@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import data from "./data.json";
+import HabitLabelContainer from './components/HabitLabelContainer/HabitLabelContainer.js';
+import DateHeader from './components/DateHeader/DateHeader.js';
 
 // import HabitLabel from './components/HabitLabel/HabitLabel.js'
 
@@ -70,7 +72,7 @@ class App extends Component{
   }
 
   showSummary = (day, habitN) => {
-    // console.log(day, habitN);
+    console.log(day, habitN);
   }
 
   updateDateRowState = (startDate, nDays) => {
@@ -118,32 +120,17 @@ class App extends Component{
           <div className="grid-side-right"></div>
 
           {/* row 2 */}
-          <div className="labels">
-            <span className="spacer-label"></span>
-            <span className="spacer-label padding-bottom"></span>
-            {
-              this.state.habitLabels.map((habitLabel, index) => (
-                <span className="habit-labels" onClick={this.showSummary(null, index)}>{habitLabel}</span>
-              ))
-            }
-          </div>
+          <HabitLabelContainer
+            labels={this.state.habitLabels}
+            habitClick={(day, habitN) => {this.showSummary(day, habitN)}}
+          />
 
           <div className="content">
-            <div className="header-row" id="dayHeader">
-              {
-                this.state.dayNames.map((dayName, index) => (
-                  <span onClick={this.showSummary(null, index)}>{dayName}</span>
-                ))
-              }
-            </div>
-
-            <div className="header-row padding-bottom" id="dateHeader">
-              {
-                this.state.dayNums.map((dayNum, index) => (
-                  <span onClick={this.showSummary(index, null)}>{dayNum}</span>
-                ))
-              }
-            </div>
+            <DateHeader
+              dayNames={this.state.dayNames}
+              dayNums={this.state.dayNums}
+              dateClick={(day, habitN) => {this.showSummary(day, habitN)}}
+            />
 
             <div className="habit-grid">
               

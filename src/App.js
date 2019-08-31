@@ -6,9 +6,8 @@ import DateHeader from './components/DateHeader/DateHeader.js';
 import HabitRow from './components/HabitRow/HabitRow.js';
 import PickerCol from './components/PickerCol/PickerCol.js';
 
-// import HabitLabel from './components/HabitLabel/HabitLabel.js'
-
-let getSlice = (data, index) => {   //when date is in the data, pass date, then use .filter and dateInRange to either set val or set 0
+// choose one day's worth of scores (data is stored as array for each habit, so need to slice across)
+let getSlice = (data, index) => {   //TODO: when date is in the data fetched remotely, pass date, then use .filter and dateInRange to either set val or set 0
   let slice = [];
   data.forEach((habit) => {
     slice.push(habit["score"][index]);
@@ -16,6 +15,7 @@ let getSlice = (data, index) => {   //when date is in the data, pass date, then 
   return slice;
 }
 
+// yields array of 7 score cols (1 col is all habits across one day) to make up a week, used by week picker
 function* generateWeek(data, maxDays) {
   let end = maxDays
   let week = [];
@@ -26,11 +26,6 @@ function* generateWeek(data, maxDays) {
       week = [];
     }
   }
-}
-
-function* weirdoGenerator(){
-  yield 1;
-  yield 2;
 }
 
 class App extends Component{
@@ -45,7 +40,7 @@ class App extends Component{
   }
 
   dateInRange = (start, index) => {
-    // console.log("index: ", index);
+    // fn for use with .filter, returns true if date is within 7 days of start, false if not
     let startDate = new Date(start);
     
     let queryDate = new Date()
@@ -54,80 +49,21 @@ class App extends Component{
     let endDate = new Date();
     endDate.setDate(startDate.getUTCDate() + (this.state.mainGridDayNum - 1));
     
-    // console.log(startDate.toISOString());
-    // console.log(queryDate.toISOString());
-    // console.log(endDate.toISOString());
-    
     if (queryDate >= startDate && queryDate <= endDate) {
-      // console.log(true);
       return true;
     } else {
-      // console.log(false);
       return false;
     }
   }
 
-
-
-  showSummaryOld = (day, habitN) => {
-    /*
-        showSummary(int, int)
-        day can be null if habit label is clicked (not a cell in the grid)
-        habitN can be null if a day label is clicked
-    */
-
-    let habitSummaryNodes = document.querySelectorAll('.habit-summary');
-    let daySummaryNodes = document.querySelectorAll('.day-summary');
-
-    let dayToggle = false;
-    let habitToggle = false;
-
-    /*
-        Turn off summary if the same thing is clicked twice.
-        If cell already shows both summaries, turn them off.
-        If clicking a label and there no summary on the other axis, it's the 2nd click so turn off.
-        See truth tables in img/toggle_cell_truth_tables.jpg
-     */
-    if (day !== null && habitN !== null) {
-        if (habitSummaryNodes[habitN].innerText !== "" && daySummaryNodes[day].innerText !== "") {
-            // console.log("clicked same cell, turn off summaries")
-            dayToggle = true;
-            habitToggle = true;
-        }
-    } else if (day === null) {
-        // node list to array, then check if one of the day summaries are on
-        let newCellSameRow = Array.from(daySummaryNodes).some((item) => item.innerText !== "");
-        if (!newCellSameRow && habitSummaryNodes[habitN].innerText !== "") {
-            // console.log("clicked habit label with no day summaries on, turn off habit summary")
-            habitToggle = true;
-        }
-    } else if (habitN === null) { // day label clicked
-        // node list to array, then check if one of the habit summaries are on
-        let newCellSameRow = Array.from(habitSummaryNodes).some((item) => item.innerText !== "");
-        if (!newCellSameRow && daySummaryNodes[day].innerText !== "") {
-            // console.log("clicked day label with no habit summaries on, turn off habit summary")
-            dayToggle = true;
-        }
-    }
-
-    // clear all results
-    habitSummaryNodes.forEach((item) => item.innerText = "");
-    daySummaryNodes.forEach((item) => item.innerText = "");
-
-    // show results
-    if (habitN !== null && !habitToggle) {
-        habitSummaryNodes[habitN].innerText = "TEMP";
-    }
-    if (day !== null && !dayToggle) {
-        daySummaryNodes[day].innerText = "TEMP";
-    }
-  }
-
   showSummary = (day, habitN) => {
+    // onclick fn for showing day and habit summaries on the main grid
+    // need to refactor old one from vanilla javascript project
     console.log(day, habitN);
   }
 
   updateDateRowState = (startDate, nDays) => {
+    // fn for when the main grid is updated to show a different week
     let day_part = parseInt(startDate.split("-")[2]);
     console.log(day_part);
     let days = this.state.dayNums;
@@ -138,10 +74,8 @@ class App extends Component{
       } else {
         stringi = i.toString();
       }
-      // console.log(stringi)
       days.push(stringi);
     }
-    // console.log(days);
 
     this.setState({
       dayNums: days,
@@ -149,7 +83,7 @@ class App extends Component{
   }
 
   doFetch = () => {
-    // console.log("doFetch");
+    // placeholder for when I need to fetch instead of load local file
     this.state.data.forEach( (habitData) => {
       console.log(habitData["title"]);
     })
@@ -175,38 +109,6 @@ class App extends Component{
     this.setState({
       maxDays: maxDays
     })
-
-    // this.dateInRange("2020-08-19", 0);
-    // this.state.data.map((habit, index) => habit["score"].filter)
-
-    // test code for getting week data
-    // let foo = this.state.data.map((habit, index) => [habit["type"], habit["score"].filter(this.dateInRange)])
-    // let foo = this.state.data.map((e, i) => console.log(e));
-    
-    // console.log("foo", foo(0));
-    console.log(this.state.maxDays, maxDays);
-
-   
-    for( let o of weirdoGenerator()) {
-      console.log(o);
-    }
-
-    // for (let week of generateWeek(this.state.data, maxDays)) {
-    //   console.log("fooweek: ", week);
-    // }
-
-    // generateWeek(this.state.data, maxDays).forEach((week) => {console.log(week)})
-
-    [...generateWeek(this.state.data, maxDays)].forEach((week) => console.log(week));
-
-  //   let weekGenerator = generateWeek(this.state.data, maxDays);
-  //   let done = false;
-  //   while (!done) {
-  //     let week = weekGenerator.next()
-  //     console.log(week.value);
-  //     done = week.done;
-  //   }
-  //   console.log("generator: ", weekGenerator.return());
   }
 
   render() {
@@ -222,9 +124,8 @@ class App extends Component{
 
           <div className="grid-side-right"></div>
 
-          {/* row 2 */}
+          {/* Grid row 2 */}
           <HabitLabelContainer
-            // labels={this.state.abels}
             labels={this.state.habitLabels}
             showSummary={(day, habitN) => {this.showSummary(day, habitN)}}
           />
@@ -265,11 +166,12 @@ class App extends Component{
             <span className="spacer-label padding-bottom"></span>
           </div>
 
-          {/* row 3 */}
-          <div className="picker-container">
+          {/* Grid row 3 */}
+          {/* create week picker */}
+          <div className="picker-container"> 
             <div className="picker">
               {
-                [...generateWeek(this.state.data, this.state.maxDays)].map((week) => (
+                [...generateWeek(this.state.data, this.state.maxDays)].map((week) => (    // slice habit arrays into a week's worth of date cols 
                   <div className="picker-week">
                     {week.map((col) => (<PickerCol col={col}/>))}
                   </div>

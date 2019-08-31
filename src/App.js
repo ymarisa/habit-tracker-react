@@ -4,8 +4,34 @@ import data from "./data.json";
 import HabitLabelContainer from './components/HabitLabelContainer/HabitLabelContainer.js';
 import DateHeader from './components/DateHeader/DateHeader.js';
 import HabitRow from './components/HabitRow/HabitRow.js';
+import PickerCol from './components/PickerCol/PickerCol.js';
 
 // import HabitLabel from './components/HabitLabel/HabitLabel.js'
+
+let getSlice = (data, index) => {   //when date is in the data, pass date, then use .filter and dateInRange to either set val or set 0
+  let slice = [];
+  data.forEach((habit) => {
+    slice.push(habit["score"][index]);
+  })
+  return slice;
+}
+
+function* generateWeek(data, maxDays) {
+  let end = maxDays
+  let week = [];
+  for (let i = 0; i < end; i++) {
+    week.push(getSlice(data, i));
+    if (i % 7 === 6) {
+      yield week;
+      week = [];
+    }
+  }
+}
+
+function* weirdoGenerator(){
+  yield 1;
+  yield 2;
+}
 
 class App extends Component{
   state = {
@@ -13,25 +39,25 @@ class App extends Component{
     startDate: '2019-08-12',
     dayNames: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
     dayNums: [], // for the date label, eg 12, 13, 14 
-    mainGridDayNum:7,
+    mainGridDayNum: 7,
     habitLabels:[],
+    maxDays: 0,
   }
 
-  dateInRange = (dateString, index) => {
+  dateInRange = (start, index) => {
     // console.log("index: ", index);
-    // let queryDate = new Date(dateString);
-    let endDate = new Date();
-    let startDate = new Date(this.state.startDate);
+    let startDate = new Date(start);
     
-    //temp while dateString is actually an index
     let queryDate = new Date()
-
     queryDate.setDate(startDate.getUTCDate() + index);
-
+    
+    let endDate = new Date();
     endDate.setDate(startDate.getUTCDate() + (this.state.mainGridDayNum - 1));
+    
     // console.log(startDate.toISOString());
     // console.log(queryDate.toISOString());
     // console.log(endDate.toISOString());
+    
     if (queryDate >= startDate && queryDate <= endDate) {
       // console.log(true);
       return true;
@@ -40,6 +66,8 @@ class App extends Component{
       return false;
     }
   }
+
+
 
   showSummaryOld = (day, habitN) => {
     /*
@@ -142,18 +170,43 @@ class App extends Component{
       });
     }
 
+    // longest number of records among habits
+    let maxDays = this.state.data.map(x => x.score.length).reduce((a, b) => Math.max(a, b));
+    this.setState({
+      maxDays: maxDays
+    })
+
     // this.dateInRange("2020-08-19", 0);
     // this.state.data.map((habit, index) => habit["score"].filter)
 
     // test code for getting week data
     // let foo = this.state.data.map((habit, index) => [habit["type"], habit["score"].filter(this.dateInRange)])
     // let foo = this.state.data.map((e, i) => console.log(e));
-    // console.log(foo);
-  }
+    
+    // console.log("foo", foo(0));
+    console.log(this.state.maxDays, maxDays);
 
-  foobar = (type, goal, score) => {
-    console.log(type, goal, score);
-    return (score / goal) * 100;
+   
+    for( let o of weirdoGenerator()) {
+      console.log(o);
+    }
+
+    // for (let week of generateWeek(this.state.data, maxDays)) {
+    //   console.log("fooweek: ", week);
+    // }
+
+    // generateWeek(this.state.data, maxDays).forEach((week) => {console.log(week)})
+
+    [...generateWeek(this.state.data, maxDays)].forEach((week) => console.log(week));
+
+  //   let weekGenerator = generateWeek(this.state.data, maxDays);
+  //   let done = false;
+  //   while (!done) {
+  //     let week = weekGenerator.next()
+  //     console.log(week.value);
+  //     done = week.done;
+  //   }
+  //   console.log("generator: ", weekGenerator.return());
   }
 
   render() {
@@ -177,21 +230,26 @@ class App extends Component{
           />
 
           <div className="content">
+            
             <DateHeader
               dayNames={this.state.dayNames}
               dayNums={this.state.dayNums}
               showSummary={(day, habitN) => {this.showSummary(day, habitN)}}
             />
+
             <div className="habit-grid">
               {this.state.data
                 .filter(row => this.state.habitLabels.indexOf(row["title"] >= 0 ))  // only habits where labels are showing
                 .map((row, index) => (
                 <HabitRow
-                  index={index}
-                  type={row["type"]}
+                  index={index}                                                           // needed to determine color
+                  type={row["type"]}                                                      // needed to determine boolean or number type
                   data={
                     row["score"]
-                      .filter(this.dateInRange)                                           // only dates within the week range from start date
+                      .filter((element, index) => {
+                        return this.dateInRange(this.state.startDate, index);
+                      })
+                      // .filter(this.dateInRange)                                           // only dates within the week range from start date
                       .map((score) => (
                         row["type"] !== "number" ? score : (score/row["dGoal"]) * 100     // number scores should be % of goal
                       ))
@@ -209,7 +267,15 @@ class App extends Component{
 
           {/* row 3 */}
           <div className="picker-container">
-            <div className="picker"></div>
+            <div className="picker">
+              {
+                [...generateWeek(this.state.data, this.state.maxDays)].map((week) => (
+                  <div className="picker-week">
+                    {week.map((col) => (<PickerCol col={col}/>))}
+                  </div>
+                ))
+              }
+            </div>
             <div className="picker-label-container">
               <span className="picker-label"></span>
               <span className="picker-label"></span>

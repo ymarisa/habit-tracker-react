@@ -7,10 +7,10 @@ class HabitRow extends Component {
     render() {
         return (
             <div className='habit-row'>
-                {this.props.data.map((score) =>
-                    (this.props.type === "number") ? 
-                    <NumberCell score={score} index={this.props.index}/> : 
-                    <BooleanCell score={score} index={this.props.index}/>)
+                {this.props.data.map((score, index) =>
+                    (this.props.type === "IntegerField") ? 
+                    <NumberCell key={index} score={score} goal={this.props.goal} index={this.props.index}/> : 
+                    <BooleanCell key={index} score={score} index={this.props.index}/>)
                 }
             </div>
         );

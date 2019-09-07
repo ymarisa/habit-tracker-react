@@ -107,7 +107,8 @@ class App extends Component{
 
   doFetch = () => {
     // placeholder for when I need to fetch instead of load local file
-    fetch('/habits')
+    // fetch('/habits')
+    fetch('/habits/')
       .then(response => response.json())
       .then(data => {
         console.log('got data back', data);
@@ -147,12 +148,12 @@ class App extends Component{
     this.doFetch();
     document.body.style.background = "#37495D";
 
-    addNDays("2019-08-12");
+    // addNDays("2019-08-12");
   }
 
   render() {
     return (
-      this.state.notLoaded ? <div></div> :
+      this.state.notLoaded ? <div style={{color: "white"}}>Loading</div> :
       <div className="App">
         <div className="grid-container">
           {/* row 1 */}

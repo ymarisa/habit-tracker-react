@@ -109,7 +109,7 @@ class App extends Component{
     // placeholder for when I need to fetch instead of load local file
     // fetch('/habits')
     fetch('/habits/')
-      .then(response => response.json())
+      .then(response => {console.log(response); return response.json();})
       .then(data => {
         console.log('got data back', data);
         
@@ -149,6 +149,11 @@ class App extends Component{
     document.body.style.background = "#37495D";
 
     // addNDays("2019-08-12");
+  }
+
+  printMe = (thing) => {
+    console.log(thing);
+    return thing;
   }
 
   render() {

@@ -89,7 +89,7 @@ h1 {
   padding-bottom: 8px;
 }
 
-.header-row, .habit-row, .day-summary-container {
+.day-summary-container {
   display: flex;
   flex-direction: row;
 }
@@ -128,61 +128,4 @@ h1 {
 
 .incomplete {
   background: var(--my-white);
-}
-
-.picker-container {
-  grid-row: 3;
-  grid-column: 1 / span 3;
-  background: var(--my-white);
-  /*border-top: 1px solid var(--my-grey);*/
-  padding-top: 8px;
-  display: grid;
-  grid-template-columns: 15% auto 15%;
-  grid-template-rows: 60px auto;
-}
-
-.picker {
-  grid-row: 1;
-  grid-column: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.picker-week {
-  display: flex;
-  flex-direction: row;
-  height: auto;
-}
-
-.picker-week:hover {
-  outline: 2px solid var(--my-grey);
-  z-index: 10;
-}
-
-.picker-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.picker-cell {
-  height: 13px;
-  width: 13px;
-}
-
-.picker-label-container {
-  grid-row: 2;
-  grid-column: 2;
-  /*border-top: 2px solid var(--my-grey);*/
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding-top: 4px;
-}
-
-.picker-label {
-  /*border: 1px solid var(--habit-1);*/
-  height: var(--header-row-height);
-  width: 40px;
-  text-align: center;
-  /*margin-left: 50px*/
 }

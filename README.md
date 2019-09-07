@@ -12,23 +12,26 @@ Takes numerical and boolean values.
 
 Mark off days that don't count against your goal, they will show as striped.
 
-Click a cell or row/header label to view a summary. Click again to toggle off.
+Click a cell or row/header label to view a summary. Click again to toggle off. Note: temporarily disabled
 
 Click a week to view from the picker at the bottom.
 
+### New Features
+* Better division into components
+* Fetches habit data via API 
+    * https://aqueous-gorge-41682.herokuapp.com
+    * https://github.com/ymarisa/dailyLog
+* Uses moment js to manage dates
+
 ### Future
-* refactor css files, move component specific elements out of app.css
-* fetch data from dailylog api
-* update dailylog with input from this app
-* add/remove habits for main grid
-* use a better date library
+* Update using API
+* Add/remove habits for main grid
 * work for varying number of habits, with varying numbers of records
 * fix hard coded data
 
 ## Known Issues
-* onclick events are not working or hooked up
-    * main grid does not show summaries
-    * picker does not allow choosing a new week
+* main grid onclick events are not working or hooked up
+    * does not show summaries
 * `picker-label` isn't working
     * onmouseover shows box to select week but not date labels
 

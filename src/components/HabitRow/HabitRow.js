@@ -6,7 +6,7 @@ import NumberCell from '../NumberCell/NumberCell.js'
 class HabitRow extends Component {
     render() {
         return (
-            <div className='habit-row'>
+            <div className='HabitRow'>
                 {this.props.data.map((score, index) =>
                     (this.props.type === "IntegerField") ? 
                     <NumberCell key={index} score={score} goal={this.props.goal} index={this.props.index}/> : 

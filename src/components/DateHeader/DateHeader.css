@@ -1,4 +1,9 @@
-.header-row > span {
+.DateHeader {
+  display: flex;
+  flex-direction: row;
+}
+
+.DateHeader > span {
     width: 62px;
     height: var(--header-row-height);
     text-align: center;

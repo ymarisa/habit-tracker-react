@@ -17,7 +17,7 @@ class PickerCell extends Component {
             style.border = "1px solid var(--habit-" + this.props.index + ")";
         }
         return (
-            <div style={style} className="picker-cell"></div>
+            <div style={style} className="PickerCell" onClick={() => this.props.picker(this.props.weekStartDate)}></div>
         )
     }
 }

@@ -1,0 +1,22 @@
+.PickerCell {
+    height: 13px;
+    width: 13px;
+  }
+
+  .PickerCell-label-container {
+    grid-row: 2;
+    grid-column: 2;
+    /*border-top: 2px solid var(--my-grey);*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 4px;
+  }
+  
+  .PickerCell-label {
+    /*border: 1px solid var(--habit-1);*/
+    height: var(--header-row-height);
+    width: 40px;
+    text-align: center;
+    /*margin-left: 50px*/
+  }

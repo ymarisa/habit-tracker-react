@@ -108,7 +108,7 @@ class App extends Component{
   doFetch = () => {
     // placeholder for when I need to fetch instead of load local file
     // fetch('/habits')
-    fetch('/habits/')
+    fetch('https://aqueous-gorge-41682.herokuapp.com/habits/')
       .then(response => {console.log(response); return response.json();})
       .then(data => {
         console.log('got data back', data);
